@@ -191,3 +191,15 @@ HTML response
 proxy error page
 
 No error handling exists.
+-------------------------------------------------------------------------------------
+Rank	      Problem	                               Impact
+1	    Crash on first render (call undefined)	    Critical
+2	    No request error handling	                  Critical
+3	    HTTP errors not checked	                    High
+4	    JSON parse failures	                        High
+5	    No loading state	                          High
+6	    Race condition on changing callId	          High
+7	    No request cancellation	                    Medium-High
+8	    Invalid callId handling	                    Medium
+9	    Assumes response structure	                Medium
+10	  Missing empty state	                        Medium
