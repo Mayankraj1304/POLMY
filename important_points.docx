@@ -1,0 +1,193 @@
+callId can be undefined
+
+If parent renders:
+    <CallDetail />
+then:
+    fetch(`/api/calls/${callId}`)
+becomes:
+    fetch('/api/calls/undefined')
+
+which may:
+
+hit wrong endpoint
+return 404
+return unexpected data
+-------------------------------------------------------------------------------------
+callId can be null
+
+fetch('/api/calls/null')
+-------------------------------------------------------------------------------------
+Network failure not handled
+
+If internet/server is down:
+fetch(...) //rejects.
+
+Current code has no:
+".catch(...)"
+
+Result: Uncaught (in promise) TypeError: Failed to fetch
+-------------------------------------------------------------------------------------
+Non-200 responses not handled
+
+Suppose server returns:404 Not Found or 500 Internal Server Error
+Fetch DOES NOT throw.This still runs:
+"r.json()"
+
+Possible issues:
+{ error: "Call not found" }
+gets stored in state as if it's valid call data.
+-------------------------------------------------------------------------------------
+Response may not be JSON
+Suppose backend returns:<html>Server Error</html>
+Then:
+r.json() throws: SyntaxError: Unexpected token '<'
+-------------------------------------------------------------------------------------
+Component may render before data exists
+
+State starts as:
+
+const [call, setCall] = useState();
+
+Meaning:
+
+call === undefined
+
+If later JSX does:
+
+<h1>{call.title}</h1>
+
+you get:
+
+Cannot read properties of undefined (reading 'title')
+
+Very common bug.
+-------------------------------------------------------------------------------------
+Race condition when callId changes quickly
+
+Example:
+
+callId = 1
+callId = 2
+callId = 3
+
+Three requests go out.
+
+If response order becomes:
+
+3 returns first
+2 returns second
+1 returns last
+
+Then:
+
+setCall(call1)
+
+overwrites newest data.
+
+UI shows wrong call.
+-------------------------------------------------------------------------------------
+User sees blank screen while fetching.
+
+No:
+
+loading
+
+state exists.
+
+Bad UX.
+-------------------------------------------------------------------------------------
+Missing error state
+
+If API fails:
+
+Failed to fetch
+
+User gets no feedback.
+
+Component silently breaks.
+-------------------------------------------------------------------------------------
+Potential security issue if endpoint requires auth
+
+If API expects:
+
+Authorization: Bearer token
+
+but fetch doesn't send it.
+
+Request may fail with:
+
+401 Unauthorized
+-------------------------------------------------------------------------------------
+Backend may return unexpected structure
+
+Expected:
+
+{
+  "title": "Sales Call",
+  "transcript": "..."
+}
+
+Actual:
+
+{
+  "data": {
+    "title": "Sales Call"
+  }
+}
+
+Then:
+
+call.title
+
+becomes:
+
+undefined
+-------------------------------------------------------------------------------------
+callId type mismatch
+
+Suppose route parameter:
+
+callId = {}
+
+Then:
+
+fetch(`/api/calls/${callId}`)
+
+becomes:
+
+/api/calls/[object Object]
+
+Invalid endpoint.
+-------------------------------------------------------------------------------------
+Empty API response
+
+Backend returns:
+
+null
+
+Then:
+
+setCall(null)
+
+Later:
+
+call.title
+
+causes:
+
+Cannot read properties of null
+-------------------------------------------------------------------------------------
+JSON parsing can throw
+
+This line:
+
+.then(r => r.json())
+
+can throw if:
+
+malformed JSON
+empty body
+HTML response
+proxy error page
+
+No error handling exists.
