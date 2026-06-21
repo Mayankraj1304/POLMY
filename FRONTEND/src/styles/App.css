@@ -1,0 +1,119 @@
+:root {
+  color-scheme: dark;
+  --background: #0f172a;
+  --surface: #111827;
+  --surface-strong: #1f2937;
+  --border: #334155;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --accent: #7c3aed;
+  --accent-soft: #4338ca22;
+  --error: #f87171;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background: radial-gradient(circle at top, #172554 0%, var(--background) 60%);
+  color: var(--text);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.call-detail-page {
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.call-detail-card {
+  width: min(100%, 720px);
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.98),
+    rgba(15, 23, 42, 0.95)
+  );
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+  padding: 32px;
+}
+
+.call-detail-title {
+  margin: 0 0 20px;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  letter-spacing: -0.04em;
+}
+
+.call-detail-label {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.select-field {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.select-field:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
+}
+
+.status-text {
+  margin-top: 20px;
+  color: var(--text-muted);
+}
+
+.error-message {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--error);
+}
+
+.call-card {
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: 20px;
+  background: var(--surface-strong);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.call-card h2 {
+  margin: 0 0 12px;
+}
+
+.call-meta {
+  margin: 0 0 18px;
+  color: var(--text-muted);
+}
+
+.call-card p {
+  line-height: 1.8;
+}
